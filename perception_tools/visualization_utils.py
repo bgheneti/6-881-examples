@@ -86,8 +86,10 @@ def VisualizeTransform(meshcat_vis, points, transform):
 
     transformed_points = transform.dot(homogenous_points.T)
 
-    PlotMeshcatPointCloud(
-    	'transformed_observations', transformed_points[:3, :].T, yellow)
+    PlotMeshcatPointCloud(meshcat_vis,
+                          'transformed_observations',
+                          transformed_points[:3, :].T,
+                          yellow)
 
 
 def VisualizeTransformedSceneAndModel(meshcat_vis, scene, model, X_MS):
@@ -113,8 +115,8 @@ def VisualizeTransformedSceneAndModel(meshcat_vis, scene, model, X_MS):
     yellow = MakeMeshcatColorArray(N, 1, 1, 0)
 
     # Create red and blue meshcat point clouds for visualization.
-    PlotMeshcatPointCloud('model', model, red)
-    PlotMeshcatPointCloud('observations', scene, blue)
+    PlotMeshcatPointCloud(meshcat_vis, 'model', model, red)
+    PlotMeshcatPointCloud(meshcat_vis, 'observations', scene, blue)
 
     # Create a copy of the scene point cloud that is homogenous
     # so we can apply a 4x4 homogenous transform to it.
@@ -126,5 +128,7 @@ def VisualizeTransformedSceneAndModel(meshcat_vis, scene, model, X_MS):
     transformed_scene = X_MS.dot(homogenous_scene.T)
 
     # Create a yellow meshcat point cloud for visualization.
-    PlotMeshcatPointCloud(
-    	'transformed_observations', transformed_scene[:3, :].T, yellow)
+    PlotMeshcatPointCloud(meshcat_vis,
+                          'transformed_observations',
+                          transformed_scene[:3, :].T,
+                          yellow)
