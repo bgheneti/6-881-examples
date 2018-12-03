@@ -12,7 +12,7 @@ from pydrake.common.eigen_geometry import Isometry3
 import pydrake.perception as mut
 
 import meshcat.transformations as tf
-from optimization_based_point_cloud_registration import (
+from perception_tools.optimization_based_point_cloud_registration import (
     AlignSceneToModel, ThresholdArray)
 from point_cloud_to_pose_system import PointCloudToPoseSystem
 
