@@ -47,7 +47,33 @@ ENV PYTHONPATH /pddlstream:$PYTHONPATH
 
 ENV PYTHONPATH /6-881-examples:$PYTHONPATH
 
+# RAI
+RUN mkdir /rai
+RUN git clone https://github.com/MarcToussaint/rai-python.git /rai/rai-python
+RUN git clone https://github.com/MarcToussaint/rai-robotModels.git /rai/rai-robotModels
+RUN cd /rai/rai-python \
+ && git config --file=.gitmodules submodule.rai.url https://github.com/MarcToussaint/rai.git \
+ && git config --file=.gitmodules submodule.rai-robotModels.url https://github.com/MarcToussaint/rai-robotModels.git
+
+RUN cd /rai/rai-python \ 
+ && git submodule init \
+ && git submodule update
+
+RUN sed -i 's/sudo apt-get/apt-get -y/g' /rai/rai-python/rai/build/generic.mk 
+
+RUN apt-get update     \
+ && cd /rai/rai-python \ 
+ && make -j1 initUbuntuPackages \
+ && apt-get clean all
+
+ENV TERM xterm
+RUN cd /rai/rai-python && make -j4
+
+RUN /bin/bash -c "source /rai/rai-python/setupPython.sh"
+
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install jupyter
+
 # set the terminator inside the docker container to be a different color
 RUN mkdir -p /root/.config/terminator
 COPY ./terminator_config /root/.config/terminator/config
-
